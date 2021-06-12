@@ -7,15 +7,37 @@ let client = new elasticsearch.Client({
 
 module.exports = {
   ping: async () => {
-    let res = await client.ping({requestTimeout: 1000})
+    let res = await client.ping({ requestTimeout: 1000 })
     return res
   },
-  search: async (body) => {
-    let data = await client.search(body)
+  info: async () => {
+    let res = await client.info()
+    return res
+  },
+  isExist: async (index) => {
+    let res = await client.indices.exists({
+      index: index
+    })
+    return res
+  },
+  initMapping: async (index, body) => {
+    let res = await client.indices.create({
+      index: index,
+      body: body
+    }, { ignore: [400] })
+    return res
+  },
+  createIndex: async (payload) => {
+    let res = await client.create(payload)
+    return res
+  },
+  search: async (payload) => {
+    let data = await client.search(payload)
     return data
   },
-  bulk: async (body) => {
-    let data = await client.bulk(body)
+  bulk: async (payload) => {
+    let data = await client.bulk({body: payload})
     return data
-  }
+  },
+
 }

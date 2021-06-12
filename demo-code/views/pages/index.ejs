@@ -13,8 +13,49 @@
 
 	<main>
 		<div class="jumbotron">
-			<h1>Elasticsearch Demo</h1>
+			<form action="/search/" method="post">
+				<label for="keyword">Keyword </label>
+				<input style='width:500px' id="keyword" type="text" value="<%= data.keyword %>"
+					name="keyword">
+				<input style='background-color:#3498db;color:white' type="submit" value="Search">
+			</form>
 		</div>
+		<% if (data.result != null) { %>
+		<div style="border-radius: 6px;background-color: black;color: chartreuse; padding: 8px;margin: 4px;">
+			<% if (data.result !=null) { %>
+				<h5>Metric System: </h5>
+				<span>
+					Successful: <%= data.result._shards.successful %>
+				</span>
+				<br/>
+				<span>
+					skipped: <%= data.result._shards.skipped %>
+				</span>
+				<br/>
+				<span>
+					Failed: <%= data.result._shards.failed %>
+				</span>
+				<br/>
+				<span>
+				   Total Result (Hits): <%= data.result.hits.total.value %>
+				</span>
+				<% } %>
+		</div>
+		<div style="background-color:#f5f6fa; border: 1px;" class="jumbotron">
+				<% if (data.result !=null) { %>
+					<% data.result.hits.hits.forEach(function(item){ %>
+
+						<% if(item._source.url != null) {%>
+						<div style="background-color: white;padding: 4px;color: #2c3e50;font-size: 18px;word-wrap:break-word;border: 1px solid #2d3436;border-radius: 4px;">
+							Url: <%= item._source.url %>
+						</div>
+						<br/>
+						<% } %>
+					<% }); %>
+				  </ul>
+				  <% } %>
+		</div>
+		<% } %>
 	</main>
 
 	<footer>
