@@ -9,13 +9,17 @@ router.get('/search', async (req, res) => {
 router.post('/search', async (req, res) => {
 	let { keyword } = req.body
 	let data = await esHandler.search({
-		index: 'web_mining',
+		index: 'hcmus_data',
 		body: {
-			query: {
-				match_phrase_prefix: {
-					content: keyword
+			"query": {
+			  "match": {
+				"content": {
+				  "query": keyword,
+				  "operator": "or",
+				  "zero_terms_query": "all"
 				}
 			}
+		  }
 		}
 	})
 	return res.render('pages/index', {
@@ -28,10 +32,10 @@ router.post('/search', async (req, res) => {
 
 router.get('/bulk', async (req, res) => {
 	let data = input.load("./src/common/data.json")
-	const bulkData = data.flatMap(doc => [{ index: { _index: 'web_mining' } }, doc])
-	let isNotExist = await esHandler.isNotExist("web_mining")
+	const bulkData = data.flatMap(doc => [{ index: { _index: 'hcmus_data' } }, doc])
+	let isNotExist = await esHandler.isNotExist("hcmus_data")
 	if (!isNotExist) {
-		await esHandler.mapping("web_mining", {
+		await esHandler.mapping("hcmus_data", {
 			mappings: {
 				properties: {
 					id: { type: 'integer' },
