@@ -6,22 +6,20 @@
 </head>
 
 <body class="container">
-
 	<header>
 		<%- include('../partials/header'); %>
 	</header>
-
 	<main>
 		<div class="jumbotron">
 			<form action="/search/" method="post">
 				<label for="keyword">Keyword </label>
 				<input style='width:500px' id="keyword" type="text" value="<%= data.keyword %>"
 					name="keyword">
-				<input style='background-color:#3498db;color:white' type="submit" value="Search">
+				<input style='background-color:#74b9ff;color:white;border-radius: 4px;' type="submit" value="Search">
 			</form>
 		</div>
 		<% if (data.result != null) { %>
-		<div style="border-radius: 6px;background-color: black;color: chartreuse; padding: 8px;margin: 4px;">
+		<div style="border-radius: 6px;background-color: black;color: chartreuse; padding: 8px;">
 			<% if (data.result !=null) { %>
 				<h5>Metric System: </h5>
 				<span>
@@ -46,8 +44,12 @@
 					<% data.result.hits.hits.forEach(function(item){ %>
 
 						<% if(item._source.url != null) {%>
-						<div style="background-color: white;padding: 4px;color: #2c3e50;font-size: 18px;word-wrap:break-word;border: 1px solid #2d3436;border-radius: 4px;">
-							Url: <%= item._source.url %>
+						<div style="background-color: white;padding: 4px;color: #2c3e50;font-size: 15px;word-wrap:break-word;border: 1px solid #636e72;border-radius: 4px;">
+							<a href=<%= item._source.url %>>
+								<span style="font-weight:500">Link: <%= item._source.url %></span>							
+							</a>
+							<br/>
+							<span>Score: <%= item._score %></span>
 						</div>
 						<br/>
 						<% } %>

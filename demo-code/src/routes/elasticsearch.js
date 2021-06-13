@@ -1,5 +1,5 @@
 const express = require('express')
-const esHandler = require("../handler/elasticsearch")
+const esHandler = require("../handler/search")
 const input = require('../handler/input')
 let router = express.Router();
 
@@ -12,7 +12,7 @@ router.post('/search', async (req, res) => {
 		index: 'web_mining',
 		body: {
 			query: {
-				match: {
+				match_phrase_prefix: {
 					content: keyword
 				}
 			}
